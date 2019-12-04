@@ -144,7 +144,9 @@ class Election:
         1
         """
         # TODO: implement this method!
-        pass
+        if riding not in self._ridings or party not in self._results[riding]:
+            return None
+        return self._results[riding][party]
 
     def riding_winners(self, riding: str) -> List[str]:
         """Return the winners, in <riding>, of this election.
@@ -164,7 +166,12 @@ class Election:
         ['pc']
         """
         # TODO: implement this method!
-        pass
+        winner = []
+        max_vote = max(self._results[riding].values())
+        for i in self._results[riding]:
+            if self._results[riding][i] == max_vote:
+                winner.append(i)
+        return winner
 
     def popular_vote(self) -> Dict[str, int]:
         """Return the total number of votes earned by each party, across
@@ -185,7 +192,11 @@ class Election:
         True
         """
         # TODO: implement this method!
-        pass
+        total = {el: 0 for el in self._parties}
+        for riding in self._results:
+            for party in self._results[riding]:
+                total[party] += self._results[riding][party]
+        return total
 
     def party_seats(self) -> Dict[str, int]:
         """Return the number of ridings that each party won in this election.
@@ -206,7 +217,12 @@ class Election:
         True
         """
         # TODO: implement this method!
-        pass
+        count = {el: 0 for el in self._parties}
+        for riding in self._ridings:
+            winner = self.riding_winners(riding)
+            if len(winner) == 1:
+                count[winner[0]] += 1
+        return count
 
     def election_winners(self) -> List[str]:
         """Return the party (or parties, in the case of a tie) that won the
@@ -227,7 +243,13 @@ class Election:
         ['pc']
         """
         # TODO: implement this method!
-        pass
+        count = self.party_seats()
+        winner = []
+        max_vote = max(count.values())
+        for i in count:
+            if count[i] == max_vote:
+                winner.append(i)
+        return winner
 
 
 class Jurisdiction:
@@ -270,6 +292,7 @@ class Jurisdiction:
         add to them.
         """
         # TODO: implement this method!
+
         pass
 
     def party_wins(self, party: str) -> List[date]:
