@@ -282,7 +282,8 @@ class Jurisdiction:
         {}
         """
         # TODO: implement this method!
-        pass
+        self._name = name
+        self._history = {}
 
     def read_results(self, year: int, month: int, day: int, instream: IO[str]) \
             -> None:
@@ -328,7 +329,11 @@ class Jurisdiction:
         [datetime.date(2003, 5, 16), datetime.date(2003, 6, 1)]
         """
         # TODO: implement this method!
-        pass
+        lst = []
+        for windate in self._history:
+            if party in self._history[windate].election_winners():
+                lst.append(windate)
+        return lst
 
     def party_history(self, party: str) -> Dict[date, float]:
         """Return this party's percentage of the popular vote
@@ -363,7 +368,15 @@ class Jurisdiction:
         True
         """
         # TODO: implement this method!
-        pass
+        percent = {}
+        for elec_date in j._history:
+            if party in j._history[elec_date]._parties:
+                result = j._history[elec_date].popular_vote()
+                total = 0
+                for voteparty in result:
+                    total += result[voteparty]
+                percent[elec_date] = result[party] / total
+        return percent
 
     def riding_changes(self) -> List[Tuple[Set[str], Set[str]]]:
         """Return the changes in ridings across elections in this jurisdiction.
