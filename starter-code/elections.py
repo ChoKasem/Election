@@ -65,7 +65,11 @@ class Election:
         datetime.date(2000, 2, 8)
         """
         # TODO: implement this method!
-        pass
+        self._d = d
+        self._ridings = []
+        self._parties = []
+        self._results = {}
+
 
     def ridings_of(self) -> List[str]:
         """Return the ridings in which votes have been recorded in this
@@ -80,6 +84,7 @@ class Election:
         ['r1', 'r2']
         """
         # TODO: implement this method!
+
         pass
 
     def update_results(self, riding: str, party: str, votes: int) -> None:
@@ -100,7 +105,16 @@ class Election:
         1001
         """
         # TODO: implement this method!
-        pass
+        if riding not in self._ridings:
+            self._ridings.append(riding)
+        if party not in self._parties:
+            self._parties.append(party)
+        if riding not in self._results:
+            self._results[riding] = {party: votes}
+        elif party not in self._results[riding]:
+            self._results[riding][party] = votes
+        else:
+            self._results[riding][party] += votes
 
     def read_results(self, instream: IO[str]) -> None:
         """Update this election with the results in instream.
