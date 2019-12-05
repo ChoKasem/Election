@@ -16,7 +16,7 @@ Copyright (c) 2019 Diane Horton, Jacqueline Smith, and Bogdan Simion
 """
 from datetime import date
 from typing import Dict, Tuple, List, Set, Optional, IO
-
+import csv
 
 class Election:
     """Data for a single election in a parliamentary democracy.
@@ -123,7 +123,18 @@ class Election:
         in the A0 handout.
         """
         # TODO: implement this method!
-        pass
+        for filename in instream:
+            firstline = True
+            with open(filename, newline='') as csvfile:
+                reader = csv.reader(csvfile, delimiter=',')
+                ridings = []
+                parties = []
+                votes = []
+                for row in reader:
+                    if firstline == True:
+                        firstline = False
+                        continue
+                    self.update_results(row[1], row[13], int(row[17]))
 
     def results_for(self, riding: str, party: str) -> Optional[int]:
         """Return the number of votes received in <riding> by <party> in
